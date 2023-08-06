@@ -1,59 +1,106 @@
 import './App.css';
 import {useState} from "react";
+import {ANSWERS, MAX_size} from "./Const";
 
 function App() {
     const [files, setFiles] = useState([])
 
-    const [answerLoad, setAnswerLoad] = useState('')
-
-    const ANSWERS = {
-        success: 'load complete',
-        bigName: 'To big name file',
-        bigSize: 'To big size file',
-        wrongType: 'Wrong type file'
-    }
 
     function handleDrop(e) {
-        console.log(e.dataTransfer.files[0])
-
+        const file = e.dataTransfer.files
         const sizeFile = e.dataTransfer.files[0].size
         const nameFile = e.dataTransfer.files[0].name
+        const spreadFile = [...file]
 
-        const MAX_size = 5120
+        if (file) {
+            spreadFile.map(file => {
+                console.log(spreadFile)
+                if (file.size > MAX_size) {
+                    return setFiles(prevState => [...prevState, {
+                        file: file,
+                        name: nameFile,
+                        size: sizeFile,
+                        status: ANSWERS.bigSize
+                    }])
+                }
+                if (nameFile.length > 15) {
+                    return setFiles(prevState => [...prevState, {
+                        file: file,
+                        name: nameFile,
+                        size: sizeFile,
+                        status: ANSWERS.bigName
+                    }])
+                }
 
+                if (!nameFile.includes('.docx')) {
+                    return setFiles(prevState => [...prevState, {
+                        file: file,
+                        name: nameFile,
+                        size: sizeFile,
+                        status: ANSWERS.wrongType
+                    }])
+                }
+                return setFiles(prevState => [...prevState, {
+                    file: file,
+                    name: nameFile,
+                    size: sizeFile,
+                    status: ANSWERS.success
+                }])
 
-        if (nameFile) {
-            if (!nameFile.includes('.docx', 'pdf', 'txt')) {
-                setAnswerLoad(ANSWERS.wrongType)
-            } else if (nameFile.length > 15) {
-                setAnswerLoad(ANSWERS.bigName)
-            }
-        } else if (sizeFile && sizeFile > MAX_size) {
-            setAnswerLoad(ANSWERS.bigSize)
-        } else {
-            setFiles(prevState => [...prevState, nameFile])
-            setAnswerLoad(ANSWERS.success)
+            })
+            console.log(file)
         }
 
-        e.stopPropagation()
+
+        // if (file) {
+        //     if (!nameFile.includes('.docx')) {
+        //         return setFiles(prevState => [...prevState, {
+        //             file: file,
+        //             name: nameFile,
+        //             size: sizeFile,
+        //             status: ANSWERS.wrongType
+        //         }])
+        //     } if (nameFile.length > 15) {
+        //        return setFiles(prevState => [...prevState, {
+        //             file: file,
+        //             name: nameFile,
+        //             size: sizeFile,
+        //             status: ANSWERS.bigName
+        //         }])
+        //     } if (sizeFile > MAX_size) {
+        //         return setFiles(prevState => [...prevState, {
+        //             file: file,
+        //             name: nameFile,
+        //             size: sizeFile,
+        //             status: ANSWERS.bigSize
+        //         }])
+        //     }
+        //         return setFiles(prevState => [...prevState, {
+        //             file: file,
+        //             name: nameFile,
+        //             size: sizeFile,
+        //             status: ANSWERS.success
+        //         }])
+        // }
+
     }
+
 
     return (
         <div className="App">
             <div className="dropzone" id="droptarget">
                 <input className='dropzone'
                        type='file'
+                       multiple
                        value=""
-                       maxSize='5000'
                        onDrop={handleDrop}/>Drop file here
             </div>
             <div>{files.length === 0
                 ? <h1>Files not fined</h1>
                 : files.map((file, index) => (
-                    <div>{index + 1}. {file}</div>
+                    <div>{index + 1}. <strong>{file.name}</strong>, {file.size} - {file.status}</div>
                 ))}
             </div>
-            <div>{answerLoad}</div>
         </div>
     );
 }
