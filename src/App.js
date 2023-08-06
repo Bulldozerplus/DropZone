@@ -12,6 +12,8 @@ function App() {
         const nameFile = e.dataTransfer.files[0].name
         const spreadFile = [...file]
 
+        const typeFile = nameFile.split('.').at(-1)
+
         if (file) {
             spreadFile.map(file => {
                 console.log(spreadFile)
@@ -32,7 +34,7 @@ function App() {
                     }])
                 }
 
-                if (!nameFile.includes('.docx')) {
+                if (typeFile !== '.docx' || '.txt') {
                     return setFiles(prevState => [...prevState, {
                         file: file,
                         name: nameFile,
