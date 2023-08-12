@@ -8,62 +8,36 @@ function App() {
 
     function handleDrop(e) {
         const file = e.dataTransfer.files
-        const sizeFile = e.dataTransfer.files[0].size
-        const nameFile = e.dataTransfer.files[0].name
-        const typeFile = nameFile.split('.').at(-1)
-        console.log([...file])
 
-        if (file && file.length <= 1) {
-            if (file.size > MAX_size) {
-                return setFileList(prevState => [...prevState, {
-                    file: file,
-                    name: nameFile,
-                    size: sizeFile,
-                    status: ANSWERS.bigSize
-                }])
-            }
-
-            if (nameFile.length > 15) {
-                return setFileList(prevState => [...prevState, {
-                    file: file,
-                    name: nameFile,
-                    size: sizeFile,
-                    status: ANSWERS.bigName
-                }])
-            }
-
-
-            return setFileList(prevState => [...prevState, {
-                file: file,
-                name: nameFile,
-                size: sizeFile,
-                status: ANSWERS.success
-            }])
-
-        } else if (file.length > 1) {
-            const arrFileList = [...file]
-            arrFileList.map(currentFile => {
+        const arrFileList = [...file].map(currentFile => {
                 console.log(currentFile)
                 if (currentFile.size > MAX_size) {
-                    return setFileList(prevState => [...prevState, {
-                        file: file,
-                        name: nameFile,
-                        size: sizeFile,
+                    return {
+                        file: currentFile,
+                        name: currentFile.name,
+                        size: currentFile.size,
                         status: ANSWERS.bigSize
-                    }])
-                    if (currentFile.name.length > 15) {
-                        return setFileList(prevState => [...prevState, {
-                            file: file,
-                            name: nameFile,
-                            size: sizeFile,
-                            status: ANSWERS.bigName
-                        }])
                     }
                 }
-            })
-        }
 
+                if (currentFile.name.length > 15) {
+                    return {
+                        file: currentFile,
+                        name: currentFile.name,
+                        size: currentFile.size,
+                        status: ANSWERS.bigName
+                    }
+                }
 
+                return {
+                    file: currentFile,
+                    name: currentFile.name,
+                    size: currentFile.size,
+                    status: ANSWERS.success
+                }
+            }
+        )
+        setFileList(prevState => [...prevState, ...arrFileList])
     }
 
 
@@ -88,3 +62,4 @@ function App() {
 
 
 export default App;
+
