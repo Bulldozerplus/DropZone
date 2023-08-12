@@ -11,9 +11,7 @@ function App() {
         const sizeFile = e.dataTransfer.files[0].size
         const nameFile = e.dataTransfer.files[0].name
         const typeFile = nameFile.split('.').at(-1)
-
-        console.log(e.dataTransfer.files[0])
-        console.log(file)
+        console.log([...file])
 
         if (file && file.length <= 1) {
             if (file.size > MAX_size) {
@@ -43,8 +41,9 @@ function App() {
                 }])
             }
 
-            if (file && file.length > 1) {
-                for (const currentFile in file) {
+            else if(file && file.length > 1) {
+                const arrFileList = [...file]
+                arrFileList.map(currentFile => {
                     if (currentFile.size > MAX_size) {
                         return setFileList(prevState => [...prevState, {
                             file: file,
@@ -52,26 +51,26 @@ function App() {
                             size: sizeFile,
                             status: ANSWERS.bigSize
                         }])
+                        if (currentFile.name.length > 15) {
+                            return setFileList(prevState => [...prevState, {
+                                file: file,
+                                name: nameFile,
+                                size: sizeFile,
+                                status: ANSWERS.bigName
+                            }])
+                            if (typeFile !== 'docx') {
+                                return setFileList(prevState => [...prevState, {
+                                    file: file,
+                                    name: nameFile,
+                                    size: sizeFile,
+                                    status: ANSWERS.wrongType
+                                }])
+                            }
+                        }
                     }
-                    if (nameFile.length > 15) {
-                        return setFileList(prevState => [...prevState, {
-                            file: file,
-                            name: nameFile,
-                            size: sizeFile,
-                            status: ANSWERS.bigName
-                        }])
-                    }
-                    if (typeFile !== '.docx') {
-                        return setFileList(prevState => [...prevState, {
-                            file: file,
-                            name: nameFile,
-                            size: sizeFile,
-                            status: ANSWERS.wrongType
-                        }])
-                    }
-                }
+                })
+                console.log(arrFileList)
             }
-
                 return setFileList(prevState => [...prevState, {
                     file: file,
                     name: nameFile,
