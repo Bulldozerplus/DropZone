@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from "react";
 import {ANSWERS, MAX_size} from "./Const";
+import {logDOM} from "@testing-library/react";
 
 function App() {
     const [fileList, setFileList] = useState([])
@@ -10,29 +11,45 @@ function App() {
         const file = e.dataTransfer.files
 
         const arrFileList = [...file].map(currentFile => {
-                console.log(currentFile)
+
+                const objFilePattern = {
+                    file: currentFile,
+                    name: currentFile.name,
+                    size: currentFile.size,
+                }
+                const nameFileWithoutType = currentFile.name.split('.').slice(0, -1).join('.')
+
+
+                if (fileList.length + file.length > 10) {
+                    return {
+                        ...objFilePattern,
+                        status: ANSWERS.fullArray
+                    }
+                }
+
+                if (!(currentFile.name.endsWith('docx') || currentFile.name.endsWith('pdf'))) {
+                    return {
+                        ...objFilePattern,
+                        status: ANSWERS.wrongType
+                    }
+                }
+
                 if (currentFile.size > MAX_size) {
                     return {
-                        file: currentFile,
-                        name: currentFile.name,
-                        size: currentFile.size,
+                        ...objFilePattern,
                         status: ANSWERS.bigSize
                     }
                 }
 
-                if (currentFile.name.length > 15) {
+                if (nameFileWithoutType.length > 15) {
                     return {
-                        file: currentFile,
-                        name: currentFile.name,
-                        size: currentFile.size,
+                        ...objFilePattern,
                         status: ANSWERS.bigName
                     }
                 }
 
                 return {
-                    file: currentFile,
-                    name: currentFile.name,
-                    size: currentFile.size,
+                    ...objFilePattern,
                     status: ANSWERS.success
                 }
             }
