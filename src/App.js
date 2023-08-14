@@ -1,6 +1,5 @@
 import './App.css';
 import {useState} from "react";
-import {ANSWERS, MAX_size} from "./Const";
 import {validatorHelper} from "./FunctionHelper";
 
 
