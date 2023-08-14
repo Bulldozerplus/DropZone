@@ -1,7 +1,8 @@
 import './App.css';
 import {useState} from "react";
 import {ANSWERS, MAX_size} from "./Const";
-import {logDOM} from "@testing-library/react";
+import {validatorHelper} from "./FunctionHelper";
+
 
 function App() {
     const [fileList, setFileList] = useState([])
@@ -17,41 +18,12 @@ function App() {
                     name: currentFile.name,
                     size: currentFile.size,
                 }
+
                 const nameFileWithoutType = currentFile.name.split('.').slice(0, -1).join('.')
 
 
-                if (fileList.length + file.length > 10) {
-                    return {
-                        ...objFilePattern,
-                        status: ANSWERS.fullArray
-                    }
-                }
+                validatorHelper(currentFile,nameFileWithoutType,objFilePattern)
 
-                if (!(currentFile.name.endsWith('docx') || currentFile.name.endsWith('pdf'))) {
-                    return {
-                        ...objFilePattern,
-                        status: ANSWERS.wrongType
-                    }
-                }
-
-                if (currentFile.size > MAX_size) {
-                    return {
-                        ...objFilePattern,
-                        status: ANSWERS.bigSize
-                    }
-                }
-
-                if (nameFileWithoutType.length > 15) {
-                    return {
-                        ...objFilePattern,
-                        status: ANSWERS.bigName
-                    }
-                }
-
-                return {
-                    ...objFilePattern,
-                    status: ANSWERS.success
-                }
             }
         )
         setFileList(prevState => [...prevState, ...arrFileList])
