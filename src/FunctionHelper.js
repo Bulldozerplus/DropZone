@@ -1,15 +1,15 @@
 import {ANSWERS, MAX_size} from "./Const";
 
-export const validatorHelper = (file, nameFile, objFile) => {
+export const validatorHelper = (sizeFile, nameFile, nameFileWithoutType, objFile) => {
 
-    if (!(file.name.endsWith('docx') || file.name.endsWith('pdf'))) {
+    if (!(nameFileWithoutType.endsWith('docx') || nameFileWithoutType.endsWith('pdf'))) {
         return {
-            objFile,
+           ...objFile,
             status: ANSWERS.wrongType
         }
     }
 
-    if (file.size > MAX_size) {
+    if (sizeFile > MAX_size) {
         return {
             ...objFile,
             status: ANSWERS.bigSize

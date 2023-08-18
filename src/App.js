@@ -18,10 +18,12 @@ function App() {
                     size: currentFile.size,
                 }
 
-                const nameFileWithoutType = currentFile.name.split('.').slice(0, -1).join('.')
 
+                const nameFile = currentFile.name
+                const sizeFile = currentFile.size
+                const nameFileWithoutType = currentFile.name.split('.').slice(-1).join('.')
 
-                validatorHelper(currentFile,nameFileWithoutType,objFilePattern)
+               return  validatorHelper(sizeFile,nameFile,nameFileWithoutType,objFilePattern)
 
             }
         )
