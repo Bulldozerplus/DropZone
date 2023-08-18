@@ -2,6 +2,7 @@ import {ANSWERS, MAX_size} from "./Const";
 
 export const validatorHelper = (sizeFile, nameFile, nameFileWithoutType, objFile) => {
 
+
     if (!(nameFileWithoutType.endsWith('docx') || nameFileWithoutType.endsWith('pdf'))) {
         return {
            ...objFile,

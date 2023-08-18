@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from "react";
 import {validatorHelper} from "./FunctionHelper";
+import {ANSWERS} from "./Const";
 
 
 function App() {
@@ -18,10 +19,10 @@ function App() {
                     size: currentFile.size,
                 }
 
-
                 const nameFile = currentFile.name
                 const sizeFile = currentFile.size
                 const nameFileWithoutType = currentFile.name.split('.').slice(-1).join('.')
+
 
                return  validatorHelper(sizeFile,nameFile,nameFileWithoutType,objFilePattern)
 
