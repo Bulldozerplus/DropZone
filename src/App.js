@@ -1,7 +1,7 @@
 import './App.css';
 import {useState} from "react";
 import {validatorHelper} from "./FunctionHelper";
-import {ANSWERS} from "./Const";
+
 
 
 function App() {
