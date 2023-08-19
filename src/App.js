@@ -13,18 +13,9 @@ function App() {
 
         const arrFileList = [...file].map(currentFile => {
 
-                const objFilePattern = {
-                    file: currentFile,
-                    name: currentFile.name,
-                    size: currentFile.size,
-                }
-
-                const nameFile = currentFile.name
-                const sizeFile = currentFile.size
-                const nameFileWithoutType = currentFile.name.split('.').slice(-1).join('.')
 
 
-               return  validatorHelper(sizeFile,nameFile,nameFileWithoutType,objFilePattern)
+               return  validatorHelper(currentFile)
 
             }
         )

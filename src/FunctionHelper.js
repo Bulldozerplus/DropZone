@@ -1,31 +1,38 @@
 import {ANSWERS, MAX_size} from "./Const";
 
-export const validatorHelper = (sizeFile, nameFile, nameFileWithoutType, objFile) => {
+export const validatorHelper = (file) => {
 
+    const objFilePattern = {
+        file: file,
+        name: file.name,
+        size: file.size,
+    }
+
+    const nameFileWithoutType = file.name.split('.').slice(-1).join('.')
 
     if (!(nameFileWithoutType.endsWith('docx') || nameFileWithoutType.endsWith('pdf'))) {
         return {
-           ...objFile,
+           ...objFilePattern,
             status: ANSWERS.wrongType
         }
     }
 
-    if (sizeFile > MAX_size) {
+    if (file.size > MAX_size) {
         return {
-            ...objFile,
+            ...objFilePattern,
             status: ANSWERS.bigSize
         }
     }
 
-    if (nameFile.length > 15) {
+    if (file.name.length > 15) {
         return {
-            ...objFile,
+            ...objFilePattern,
             status: ANSWERS.bigName
         }
     }
 
     return {
-        ...objFile,
+        ...objFilePattern,
         status: ANSWERS.success
     }
 
