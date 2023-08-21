@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from "react";
 import {validatorHelper} from "./FunctionHelper";
+import {ANSWERS} from "./Const";
 
 
 
@@ -11,15 +12,39 @@ function App() {
     function handleDrop(e) {
         const file = e.dataTransfer.files
 
-        const arrFileList = [...file].map(currentFile => {
+        const fileListSpreadArray = [...file]
+        console.log(fileListSpreadArray)
+        const countAllowedFiles = (files) => {
 
+            console.log(files.length)
+            let amountOfFreeSpaceForDownloadedFiles = 10 - files.length
 
+            const allowedFiles = files.slice(0, amountOfFreeSpaceForDownloadedFiles)
+            const abortedFiles = files.slice(amountOfFreeSpaceForDownloadedFiles)
 
-               return  validatorHelper(currentFile)
+            const allowedFileArray = allowedFiles.map(currentFile => {
+                return validatorHelper(currentFile)
+            })
 
-            }
-        )
-        setFileList(prevState => [...prevState, ...arrFileList])
+            const abortedFileArray = abortedFiles.map(currentFile => {
+                if (currentFile) {
+                    const objFilePattern = {
+                        file: currentFile,
+                        name: currentFile.name,
+                        size: currentFile.size,
+                    }
+                    return {
+                        ...objFilePattern,
+                        status: ANSWERS.fullArray
+                    }
+                }
+            })
+
+            return [...allowedFileArray, ...abortedFileArray]
+        }
+        console.log(countAllowedFiles(fileListSpreadArray))
+
+        setFileList(prevState => [...prevState, ...countAllowedFiles()])
     }
 
 
