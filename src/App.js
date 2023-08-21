@@ -14,9 +14,7 @@ function App() {
 
         console.log(fileListSpreadArray)
 
-        console.log(countAllowedAndAbortedFiles(fileListSpreadArray))
-
-        setFileList(prevState => [...prevState, ...countAllowedAndAbortedFiles()])
+        setFileList(prevState => [...prevState, ...countAllowedAndAbortedFiles(fileListSpreadArray, fileList)])
     }
 
 
