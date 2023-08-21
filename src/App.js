@@ -1,8 +1,6 @@
 import './App.css';
 import {useState} from "react";
-import {validatorHelper} from "./FunctionHelper";
-import {ANSWERS} from "./Const";
-
+import {countAllowedAndAbortedFiles} from "./FunctionCountAndSortFiles";
 
 
 function App() {
@@ -13,35 +11,9 @@ function App() {
         const file = e.dataTransfer.files
 
         const fileListSpreadArray = [...file]
+
         console.log(fileListSpreadArray)
-        const countAllowedAndAbortedFiles = (files) => {
 
-            console.log(files.length)
-            let amountOfFreeSpaceForDownloadedFiles = 10 - files.length
-
-            const allowedFiles = files.slice(0, amountOfFreeSpaceForDownloadedFiles)
-            const abortedFiles = files.slice(amountOfFreeSpaceForDownloadedFiles)
-
-            const allowedFileArray = allowedFiles.map(currentFile => {
-                return validatorHelper(currentFile)
-            })
-
-            const abortedFileArray = abortedFiles.map(currentFile => {
-                if (currentFile) {
-                    const objFilePattern = {
-                        file: currentFile,
-                        name: currentFile.name,
-                        size: currentFile.size,
-                    }
-                    return {
-                        ...objFilePattern,
-                        status: ANSWERS.fullArray
-                    }
-                }
-            })
-
-            return [...allowedFileArray, ...abortedFileArray]
-        }
         console.log(countAllowedAndAbortedFiles(fileListSpreadArray))
 
         setFileList(prevState => [...prevState, ...countAllowedAndAbortedFiles()])
