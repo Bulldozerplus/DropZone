@@ -14,7 +14,7 @@ function App() {
 
         const fileListSpreadArray = [...file]
         console.log(fileListSpreadArray)
-        const countAllowedFiles = (files) => {
+        const countAllowedAndAbortedFiles = (files) => {
 
             console.log(files.length)
             let amountOfFreeSpaceForDownloadedFiles = 10 - files.length
@@ -42,9 +42,9 @@ function App() {
 
             return [...allowedFileArray, ...abortedFileArray]
         }
-        console.log(countAllowedFiles(fileListSpreadArray))
+        console.log(countAllowedAndAbortedFiles(fileListSpreadArray))
 
-        setFileList(prevState => [...prevState, ...countAllowedFiles()])
+        setFileList(prevState => [...prevState, ...countAllowedAndAbortedFiles()])
     }
 
 
