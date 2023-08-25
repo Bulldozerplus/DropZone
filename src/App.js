@@ -1,34 +1,31 @@
 import './App.css';
-import {useState} from "react";
-import {countAllowedAndAbortedFiles} from "./FunctionCountAndSortFiles";
+import {useEffect, useState} from "react";
+import {countAllowedAndAbortedFiles} from "./Function/FunctionCountAndSortFiles";
+import axios from "axios";
+import {pushDataOnTheServer} from "./Function/PushDataOnServer";
 
 
 
 function App() {
     const [fileListPrepareForDownload, setFileListPrepareForDownload] = useState([])
+    const [fileListFromServer, setFileListFromServer] = useState([])
 
-
-     function pushDataOnTheServer(filesArray) {
-            return filesArray.map(async (currentFile) => {
-            const formData = new FormData()
-            formData.append('file', currentFile)
-            return await fetch('http://localhost:4003/files/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                body: formData
-            })
-        })
+    async function getDataForRender() {
+        const dataFromServer = await axios.get('http://localhost:4003/files/list')
+        setFileListFromServer(dataFromServer.data)
+        console.log(dataFromServer.data)
     }
+
+    useEffect(() => {
+        getDataForRender()
+    },[fileListFromServer])
+
 
 
     function handleDrop(e) {
         const file = e.dataTransfer.files
 
         const fileListSpreadArray = [...file]
-
-        console.log(fileListSpreadArray)
 
         setFileListPrepareForDownload(prevState => [...prevState, ...countAllowedAndAbortedFiles(fileListSpreadArray, fileListPrepareForDownload)])
     }
@@ -51,6 +48,13 @@ function App() {
                 ))}
             </div>
             <button onClick={() => pushDataOnTheServer(fileListPrepareForDownload)}>Download files on the server</button>
+            <h2>Files prepare for download</h2>
+            <div>{fileListFromServer.length === 0
+                ? <h1>Files not fined</h1>
+                : fileListFromServer.map((file, index) => (
+                    <div>{index + 1}<strong>{file.filename}</strong>, {file.size}</div>
+                ))}
+            </div>
         </div>
     );
 }

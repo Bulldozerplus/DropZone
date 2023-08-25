@@ -1,5 +1,5 @@
 import {validatorHelper} from "./FunctionHelper";
-import {ANSWERS} from "./Const";
+import {ANSWERS} from "../Const";
 
 export   const countAllowedAndAbortedFiles = (files, currentFileListSize) => {
 

@@ -1,4 +1,4 @@
-import {ANSWERS, MAX_size} from "./Const";
+import {ANSWERS, MAX_size} from "../Const";
 
 export const validatorHelper = (file) => {
 
