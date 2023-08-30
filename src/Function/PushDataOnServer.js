@@ -12,7 +12,8 @@ export function pushDataOnTheServer(filesArray) {
                     }
                 )
                 if (push.ok) {
-                    return {...currentFile, status: ANSWERS.success}
+                    currentFile.status = ANSWERS.success
+                    return currentFile
                 }
             }
         } catch {
