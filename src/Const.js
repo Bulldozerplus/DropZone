@@ -1,5 +1,6 @@
 
 export  const ANSWERS = {
+    inProcess: 'in process',
     success: 'load complete',
     bigName: 'To big name file',
     bigSize: 'To big size file',

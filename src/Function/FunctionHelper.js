@@ -33,7 +33,7 @@ export const validatorHelper = (file) => {
 
     return {
         ...objFilePattern,
-        status: ANSWERS.success
+        status: ANSWERS.inProcess
     }
 
 }
