@@ -14,13 +14,15 @@ function App() {
         setFileListFromServer(dataFromServer.data)
     }
 
-async function deleteFileOnServer(id){
+    async function deleteFileOnServer(id) {
         const fetchDeleteId = await fetch(`http://localhost:4003/files/delete/${id}`)
-       return getDataForRender()
+        setFileListPrepareForDownload([])
+        return getDataForRender()
     }
 
-    function pushData(){
-   return pushDataOnTheServer(fileListPrepareForDownload)
+    function pushDataAndRender() {
+        pushDataOnTheServer(fileListPrepareForDownload)
+        return getDataForRender()
     }
 
     function handleDrop(e) {
@@ -34,10 +36,7 @@ async function deleteFileOnServer(id){
 
     useEffect(() => {
         getDataForRender()
-    }, [fileListFromServer])
-
-
-
+    }, [])
 
 
     return (
@@ -48,7 +47,7 @@ async function deleteFileOnServer(id){
                        multiple
                        value=""
                        onDrop={handleDrop}
-                onChange={()=> pushData()}/>Drop file here
+                       onChange={() => pushDataAndRender()}/>Drop file here
             </div>
             <h2>Files prepare for download</h2>
             <div>{fileListPrepareForDownload.length === 0
@@ -61,7 +60,9 @@ async function deleteFileOnServer(id){
             <div>{fileListFromServer.length === 0
                 ? <h1>Files not fined</h1>
                 : fileListFromServer.map((file, index) => (
-                    <div key={index}>{index + 1}<strong>{file.filename}</strong>, {file.size} <button onClick={() => deleteFileOnServer(file.id)}>delete file</button></div>
+                    <div key={index}>{index + 1}<strong>{file.filename}</strong>, {file.size}
+                        <button onClick={() => deleteFileOnServer(file.id)}>delete file</button>
+                    </div>
                 ))}
             </div>
         </div>
