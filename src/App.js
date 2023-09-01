@@ -14,6 +14,11 @@ function App() {
         setFileListFromServer(dataFromServer.data)
     }
 
+async function deleteFileOnServer(id){
+        const fetchDeleteId = await fetch(`http://localhost:4003/files/delete/${id}`)
+       return getDataForRender()
+    }
+
     function pushData(){
    return pushDataOnTheServer(fileListPrepareForDownload)
     }
@@ -49,14 +54,14 @@ function App() {
             <div>{fileListPrepareForDownload.length === 0
                 ? <h1>Files not fined</h1>
                 : fileListPrepareForDownload.map((file, index) => (
-                    <div>{index + 1}. <strong>{file.name}</strong>, {file.size} - {file.status}</div>
+                    <div key={index}>{index + 1}. <strong>{file.name}</strong>, {file.size} - {file.status}</div>
                 ))}
             </div>
             <h2>Files on the server</h2>
             <div>{fileListFromServer.length === 0
                 ? <h1>Files not fined</h1>
                 : fileListFromServer.map((file, index) => (
-                    <div>{index + 1}<strong>{file.filename}</strong>, {file.size}</div>
+                    <div key={index}>{index + 1}<strong>{file.filename}</strong>, {file.size} <button onClick={() => deleteFileOnServer(file.id)}>delete file</button></div>
                 ))}
             </div>
         </div>
