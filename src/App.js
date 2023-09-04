@@ -14,19 +14,19 @@ function App() {
         setFileListFromServer(dataFromServer.data)
     }
 
-    async function downloadFileFromServer(id) {
+    async function downloadFileFromServer(id, fileName) {
        const fetchDownloadUrl = await fetch(`http://localhost:4003/files/download/${id}`)
         const blobFetchData = await fetchDownloadUrl.blob()
         console.log(fetchDownloadUrl)
         if (!fetchDownloadUrl.ok) {
             setTimeout(() => {
-                downloadFileFromServer(id)
+               downloadFileFromServer(id)
             }, 3000)
         }
         if (fetchDownloadUrl.ok) {
             let objectURl = URL.createObjectURL(blobFetchData)
             let anchor = document.createElement("a")
-            anchor.download = "file name.txt"
+            anchor.download = `${fileName}`
             anchor.href = objectURl
             anchor.click()
         }
@@ -81,7 +81,7 @@ function App() {
                 : fileListFromServer.map((file, index) => (
                     <div key={index}>{index + 1}<strong>{file.filename}</strong>, {file.size}
                         <button onClick={() => deleteFileOnServer(file.id)}>delete file</button>
-                        <button onClick={() => downloadFileFromServer(file.id)}>download file</button>
+                        <button onClick={() => downloadFileFromServer(file.id, file.filename)}>download file</button>
                     </div>
                 ))}
             </div>
