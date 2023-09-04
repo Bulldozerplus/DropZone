@@ -16,14 +16,16 @@ function App() {
 
     async function downloadFileFromServer(id, fileName) {
        const fetchDownloadUrl = await fetch(`http://localhost:4003/files/download/${id}`)
-        const blobFetchData = await fetchDownloadUrl.blob()
+
         console.log(fetchDownloadUrl)
-        if (!fetchDownloadUrl.ok) {
+        if (fetchDownloadUrl.status === 204) {
+            console.log('if')
             setTimeout(() => {
-               downloadFileFromServer(id)
+               downloadFileFromServer(id, fileName)
             }, 3000)
         }
-        if (fetchDownloadUrl.ok) {
+        if (fetchDownloadUrl.status === 200) {
+            const blobFetchData = await fetchDownloadUrl.blob()
             let objectURl = URL.createObjectURL(blobFetchData)
             let anchor = document.createElement("a")
             anchor.download = `${fileName}`
@@ -39,8 +41,8 @@ function App() {
         return getDataForRender()
     }
 
-    function pushDataAndRender() {
-        pushDataOnTheServer(fileListPrepareForDownload)
+   async function pushDataAndRender() {
+        await pushDataOnTheServer(fileListPrepareForDownload)
         return getDataForRender()
     }
 
@@ -80,8 +82,8 @@ function App() {
                 ? <h1>Files not fined</h1>
                 : fileListFromServer.map((file, index) => (
                     <div key={index}>{index + 1}<strong>{file.filename}</strong>, {file.size}
-                        <button onClick={() => deleteFileOnServer(file.id)}>delete file</button>
-                        <button onClick={() => downloadFileFromServer(file.id, file.filename)}>download file</button>
+                        <button className='button_delete' onClick={() => deleteFileOnServer(file.id)}>delete file</button>
+                        <button className='button_download' onClick={() => downloadFileFromServer(file.id, file.filename)}>download file</button>
                     </div>
                 ))}
             </div>

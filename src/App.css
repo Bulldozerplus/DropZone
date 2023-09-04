@@ -29,3 +29,17 @@
 .dropzone:hover{
   background: aqua;
 }
+
+.button_delete {
+    border-radius: 15px;
+    color: darkred;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.button_download {
+    border-radius: 15px;
+    color: dodgerblue;
+    font-weight: bold;
+}

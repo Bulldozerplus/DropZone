@@ -1,7 +1,7 @@
 import {ANSWERS} from "../Const";
 
-export function pushDataOnTheServer(filesArray) {
-    return filesArray.map(async (currentFile) => {
+export async function pushDataOnTheServer(filesArray) {
+    const promises = filesArray.map(async (currentFile) => {
         try {
             if (currentFile.status === ANSWERS.inProcess) {
                 const formData = new FormData()
@@ -17,7 +17,8 @@ export function pushDataOnTheServer(filesArray) {
                 }
             }
         } catch {
-
+            return currentFile
         }
     })
+    await Promise.all(promises)
 }
