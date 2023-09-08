@@ -9,7 +9,7 @@ export  async function uploadFileFromServer(id, fileName) {
         }, 3000)
     }
     if (fetchUploadUrl.status === 200) {
-        const blobFetchData = await fetchDownloadUrl.blob()
+        const blobFetchData = await fetchUploadUrl.blob()
         let objectURl = URL.createObjectURL(blobFetchData)
         let anchor = document.createElement("a")
         anchor.download = `${fileName}`
