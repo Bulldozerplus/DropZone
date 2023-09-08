@@ -1,4 +1,5 @@
 import {ANSWERS} from "../Const";
+import {serverFetch} from "../Servises/URlservices";
 
 export async function pushDataOnTheServer(filesArray) {
     const promises = filesArray.map(async (currentFile) => {
@@ -6,11 +7,7 @@ export async function pushDataOnTheServer(filesArray) {
             if (currentFile.status === ANSWERS.inProcess) {
                 const formData = new FormData()
                 formData.append('file', currentFile.file)
-                const push = await fetch('http://localhost:4003/files/save', {
-                        method: 'POST',
-                        body: formData
-                    }
-                )
+                const push = await serverFetch.pushFiles(formData)
                 if (push.ok) {
                     currentFile.status = ANSWERS.success
                     return currentFile

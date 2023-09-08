@@ -8,4 +8,4 @@ export  const ANSWERS = {
     fullArray: 'The array is full'
 }
 
-export const MAX_size = 5120
+export const MAX_size = 51200
